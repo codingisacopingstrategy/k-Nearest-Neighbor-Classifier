@@ -1,0 +1,73 @@
+This directory contains the source code for the kNN classifier. 
+
+Copyright 2010 Folgert Karsdorp (fbkarsdorp@gmail.com)
+
+----------------------------------------------------------------------------------------
+This program is free software; you can redistribute it and/or modify  it under the terms 
+of the GNU General Public License as published by the Free Software Foundation; either 
+version 2 of the License, or (at your option) any later version.
+       
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program; 
+if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+Boston,  MA 02110-1301, USA.
+-----------------------------------------------------------------------------------------
+
+The code is designed to be loaded with Another System Definition Facility (ASDF). You can 
+either add the name of the knn-directory to ASDF:*CENTRAL-REGISTRY* or you can create 
+symlinks to the knn.asd file in a directory that is already named in 
+ASDF:*CENTRAL-REGISTRY*.
+
+You can load up the knn-classifier by typing:
+
+  (asdf:operate 'asdf:load-op 'knn)
+
+at the REPL. After that you enter the package by typing:
+
+  (in-package :classifier.knn)
+
+All classification runs start with the function RUN-CLASSIFICATION. What follows is a list of possible classification tests:
+
+1. Classify a test-set on the basis of a training-set. Two separate files (for test and training set respectively) are needed. Extra options are the level of k and weighting functions (not implemented). A typical run is don by typing:
+
+(run-classification (:test-fn with-test-file :data-set "/path/to/training-file"
+                     :test-file "/path/to/test-file")
+                    :k [level of k, defaults to 1])
+
+at the REPL. Depending on the size of the test and training set, you should soon see the 
+results of the classification.
+
+2. Classification using leave-one-out cross-validation. A data-set is needed. Extra options are the level of k and weighting functions (not implemented). A typical run is done by typing:
+
+(run-classification (:test-fn leave-one-out :data-set "/path/to/dataset") 
+                     :k [level of k, defaults to 1])
+
+at the REPL.
+
+3. N-fold cross-validation. A data-set is needed. Extra options are the level of k, weighting functions (not implemented) and the number of folds. A typical run is as follows:
+
+(run-classification (:test-fn cross-validation :data-set "/path/to/dataset")
+                    :folds [number of folds, defaults to 10]
+                    :k [number of k, defaults to 1])
+
+4. Learning-curve. A dataset is needed. Extra options are the level of k, weighting functions (not implemented), the number of trails per level and the sizes at which a classification is performed (not needed). A typical run is as follows:
+
+(run-classification (:test-fn learning-curve :data-set "/path/to/dataset")
+                    :trials [number of trials, defaults to 10]
+                    :sizes  [sizes of trainingsets, defaults to ++2 at each level]
+                    :k [number of k, defaults to 1])
+
+5. Classify a single item on the basis of a training-file. First load a training-file with:
+
+(load-training-file "/path/to/trainingfile")
+
+then type:
+
+  (classify (test-item "test,item,to,be,classified") [optional level of k; defaults to 1])
+
+at the REPL. The test-item should be a string with all values separated by commas. Note that you should also supply an observed outcome.
+
+--Folgert Karsdorp
