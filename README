@@ -101,12 +101,12 @@ What follows is a list of possible classification tests:
      (setf *voting-function* ['majority-voting or 'inverse-linear-weighting
                               or 'inverse-distance-weight] ; note the quote!
 
-then enter:
+   then enter:
 
      (classify (test-item "test,item,to,be,classified") 
                 [optional level of k; defaults to 1])
 
-at the REPL. The test-item should be a string with all values separated by commas. Note that you 
-should also supply an observed outcome.
+   at the REPL. The test-item should be a string with all values separated by commas. Note that 
+   you should also supply an observed outcome.
 
 -- Folgert
